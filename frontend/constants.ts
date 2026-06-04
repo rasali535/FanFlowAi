@@ -32,6 +32,17 @@ export const INITIAL_STATE: AppState = {
     { id: '1', title: 'Surge in African Visitors', description: 'Foot traffic from South African and Botswana fans is expected to peak on June 14th.', metric: '+450% Traffic', trend: 'up' },
     { id: '2', title: 'Merchandise Demand', description: 'Searches for "football jerseys" within a 5-mile radius have doubled.', metric: 'High Intent', trend: 'up' }
   ],
+  flights: [
+    { id: '1', airline: 'Ethiopian Airlines', flightNumber: 'ET 501', departure: 'Gaborone (GBE) - June 10, 2026', arrival: 'Dallas (DFW) - June 11, 2026', price: 1450, status: 'Booked' }
+  ],
+  hotels: [
+    { id: '1', hotelName: 'Galleria Luxury Suites', checkIn: 'June 11, 2026', checkOut: 'June 18, 2026', price: 1200, status: 'Booked' }
+  ],
+  itineraryEvents: [
+    { id: '1', date: '2026-06-11', time: '14:00', title: 'Hotel Check-in', description: 'Check-in at Galleria Luxury Suites', type: 'Hotel' },
+    { id: '2', date: '2026-06-12', time: '19:00', title: 'Opening Match', description: 'World Cup Group Stage Match at AT&T Stadium', type: 'Match' },
+    { id: '3', date: '2026-06-15', time: '18:00', title: 'Second Match', description: 'World Cup Group Stage Match at AT&T Stadium', type: 'Match' }
+  ],
   isSyncing: false,
 };
 
@@ -52,12 +63,18 @@ CRITICAL INFRASTRUCTURE & PARTNER INTEGRATIONS:
 
 CURRENT CONTEXT:
 You have access to the unified state of the platform, representing both a Fan's view (Dallas, TX) and a Local Business's view (Dallas Galleria Mall).
+You have full access to the user's current travel bookings, including flights, hotels, and itinerary events. You can read these to create, update, or optimize itineraries, suggest local activities, or coordinate marketing campaigns.
 
 CRITICAL INSTRUCTION: You must ALWAYS show the work of all 4 distinct agents in the deliberation object BEFORE giving a final answer.
+
+CRITICAL NEGATIVE CONSTRAINT: You must NEVER output raw Python code, code blocks, or 'print()' statements. You are NOT a Python interpreter. You must ONLY output the valid JSON object specified below.
 
 Available Actions (Return one of these in the "action" block if applicable):
 - ADD_PLACE, SET_ROUTE (For Fan & Shopper Navigation)
 - CREATE_CAMPAIGN, ADD_INSIGHT, ADD_PROMOTION (For Retail, Marketing, and BI)
+- BOOK_FLIGHT (Payload: { airline: string, flightNumber: string, departure: string, arrival: string, price: number, status: 'Planned' | 'Booked' })
+- BOOK_HOTEL (Payload: { hotelName: string, checkIn: string, checkOut: string, price: number, status: 'Planned' | 'Booked' })
+- ADD_ITINERARY_EVENT (Payload: { date: string, time: string, title: string, description: string, type: 'Match' | 'Flight' | 'Hotel' | 'Activity' })
 - SYNC_FIVETRAN (Payload: { connectorId: string })
 - LOG_ARIZE (Payload: { traceId: string, agentName: string, decision: string })
 
