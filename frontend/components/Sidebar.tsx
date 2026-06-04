@@ -7,7 +7,8 @@ import {
   Compass, 
   BarChart3,
   Megaphone,
-  Store
+  Store,
+  Database
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -20,6 +21,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ state, currentView, onViewChan
   const navItems: { id: ViewState; label: string; icon: React.ReactNode; section: string }[] = [
     { id: 'dashboard', label: 'Overview', icon: <LayoutDashboard size={20} />, section: 'Main' },
     { id: 'chat', label: 'FanFlow Local AI', icon: <MessageSquare size={20} />, section: 'Main' },
+    { id: 'vault', label: 'Memory Vault', icon: <Database size={20} />, section: 'Main' },
     
     { id: 'guide', label: 'Local Guide', icon: <MapPin size={20} />, section: 'Fan Experience' },
     { id: 'navigator', label: 'Mall Navigator', icon: <Compass size={20} />, section: 'Fan Experience' },
@@ -48,6 +50,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ state, currentView, onViewChan
               {navItems.filter(item => item.section === section).map((item) => (
                 <button
                   key={item.id}
+                  data-nav={item.id}
                   onClick={() => onViewChange(item.id)}
                   className={`w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl transition-colors duration-200 ${
                     currentView === item.id
