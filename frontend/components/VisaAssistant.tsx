@@ -1,10 +1,10 @@
 import React from 'react';
 import { AppState } from '../types';
-import { Compass, Map, ArrowRight, Tag, Store, MapPin } from 'lucide-react';
+import { Compass, Map, Tag, Store, MapPin } from 'lucide-react';
 
 interface MallNavigatorProps {
   state: AppState;
-  onNavigate: (view: any) => void;
+  onNavigate: (view: any, prompt?: string) => void;
 }
 
 export const MallNavigator: React.FC<MallNavigatorProps> = ({ state, onNavigate }) => {
@@ -17,7 +17,7 @@ export const MallNavigator: React.FC<MallNavigatorProps> = ({ state, onNavigate 
           <h2 className="text-2xl font-bold text-gray-900">Mall Navigator</h2>
           <p className="text-gray-500">Indoor routing and live promotions at {state.businessProfile.name}.</p>
         </div>
-        <button onClick={() => onNavigate('chat')} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm flex items-center">
+        <button onClick={() => onNavigate('chat', 'Generate a new indoor route to the nearest food court.')} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm flex items-center">
           <Map size={16} className="mr-2" /> New Route
         </button>
       </div>
