@@ -9,7 +9,7 @@ interface MemoryVaultProps {
 
 export const MemoryVault: React.FC<MemoryVaultProps> = ({ state, onNavigate }) => {
   const [activeTab, setActiveCollectionTab] = useState<'swarm' | 'elastic_mcp'>('swarm');
-  const [activeCollection, setActiveCollection] = useState<'savedPlaces' | 'campaigns' | 'activePromotions'>('savedPlaces');
+  const [activeCollection, setActiveCollection] = useState<'savedPlaces' | 'campaigns' | 'activePromotions' | 'flights' | 'hotels' | 'itineraryEvents'>('savedPlaces');
   const [isSyncingFivetran, setIsSyncingFivetran] = useState(false);
   const [isLoggingArize, setIsLoggingArize] = useState(false);
   
@@ -221,8 +221,8 @@ export const MemoryVault: React.FC<MemoryVaultProps> = ({ state, onNavigate }) =
             </div>
 
             {/* Collection Tabs */}
-            <div className="flex space-x-2 mb-4 border-b border-gray-100 pb-3">
-              {(['savedPlaces', 'campaigns', 'activePromotions'] as const).map((col) => (
+            <div className="flex flex-wrap gap-2 mb-4 border-b border-gray-100 pb-3">
+              {(['savedPlaces', 'campaigns', 'activePromotions', 'flights', 'hotels', 'itineraryEvents'] as const).map((col) => (
                 <button
                   key={col}
                   onClick={() => setActiveCollection(col)}
@@ -232,7 +232,11 @@ export const MemoryVault: React.FC<MemoryVaultProps> = ({ state, onNavigate }) =
                       : 'text-gray-500 hover:bg-gray-50'
                   }`}
                 >
-                  {col === 'savedPlaces' ? 'saved_places' : col === 'campaigns' ? 'marketing_campaigns' : 'active_promotions'} ({state[col].length})
+                  {col === 'savedPlaces' ? 'saved_places' : 
+                   col === 'campaigns' ? 'marketing_campaigns' : 
+                   col === 'activePromotions' ? 'active_promotions' : 
+                   col === 'flights' ? 'flights' : 
+                   col === 'hotels' ? 'hotels' : 'itinerary_events'} ({state[col].length})
                 </button>
               ))}
             </div>
