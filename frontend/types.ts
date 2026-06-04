@@ -79,10 +79,10 @@ export interface ChatMessage {
   actionTaken?: string;
 }
 
-export type ViewState = 'dashboard' | 'chat' | 'guide' | 'navigator' | 'campaigns' | 'insights';
+export type ViewState = 'dashboard' | 'chat' | 'guide' | 'navigator' | 'campaigns' | 'insights' | 'vault';
 
 export interface AgentAction {
-  type: 'ADD_PLACE' | 'SET_ROUTE' | 'CREATE_CAMPAIGN' | 'ADD_INSIGHT' | 'ADD_PROMOTION';
+  type: 'ADD_PLACE' | 'SET_ROUTE' | 'CREATE_CAMPAIGN' | 'ADD_INSIGHT' | 'ADD_PROMOTION' | 'SYNC_FIVETRAN' | 'LOG_ARIZE';
   payload: any;
 }
 
