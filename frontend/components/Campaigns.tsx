@@ -4,7 +4,7 @@ import { Megaphone, Plus, Camera, ThumbsUp, Mail, Video } from 'lucide-react';
 
 interface CampaignsProps {
   state: AppState;
-  onNavigate: (view: any) => void;
+  onNavigate: (view: any, prompt?: string) => void;
 }
 
 export const Campaigns: React.FC<CampaignsProps> = ({ state, onNavigate }) => {
@@ -25,7 +25,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({ state, onNavigate }) => {
           <h2 className="text-2xl font-bold text-gray-900">Marketing Campaigns</h2>
           <p className="text-gray-500">Automated promotions targeting World Cup fans.</p>
         </div>
-        <button onClick={() => onNavigate('chat')} className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors shadow-sm flex items-center">
+        <button onClick={() => onNavigate('chat', 'Create a new marketing campaign targeting visiting fans.')} className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors shadow-sm flex items-center">
           <Plus size={16} className="mr-2" /> Ask Agent to Create
         </button>
       </div>
@@ -70,7 +70,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({ state, onNavigate }) => {
                 <p className="text-xs text-gray-500">Budget</p>
                 <p className="font-bold text-gray-900">${campaign.budget}</p>
               </div>
-              <button onClick={() => onNavigate('chat')} className="text-sm text-indigo-600 font-medium hover:text-indigo-800">Edit &rarr;</button>
+              <button onClick={() => onNavigate('chat', `Edit the campaign named "${campaign.name}"`)} className="text-sm text-indigo-600 font-medium hover:text-indigo-800">Edit &rarr;</button>
             </div>
           </div>
         ))}
