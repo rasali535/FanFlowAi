@@ -8,9 +8,11 @@ interface AgentChatProps {
   messages: ChatMessage[];
   onSendMessage: (msg: ChatMessage) => void;
   onAgentAction: (action: AgentAction) => void;
+  pendingPrompt?: string;
+  clearPendingPrompt?: () => void;
 }
 
-export const AgentChat: React.FC<AgentChatProps> = ({ state, messages, onSendMessage, onAgentAction }) => {
+export const AgentChat: React.FC<AgentChatProps> = ({ state, messages, onSendMessage, onAgentAction, pendingPrompt, clearPendingPrompt }) => {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -23,18 +25,19 @@ export const AgentChat: React.FC<AgentChatProps> = ({ state, messages, onSendMes
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
+  const handleSend = async (overrideInput?: string) => {
+    const textToSend = overrideInput || input;
+    if (!textToSend.trim()) return;
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
-      content: input,
+      content: textToSend,
       timestamp: new Date(),
     };
 
     onSendMessage(userMsg);
-    setInput('');
+    if (!overrideInput) setInput('');
     setIsTyping(true);
 
     try {
@@ -78,6 +81,15 @@ export const AgentChat: React.FC<AgentChatProps> = ({ state, messages, onSendMes
     }
   };
 
+  // Handle pending prompt from navigation
+  useEffect(() => {
+    if (pendingPrompt) {
+      handleSend(pendingPrompt);
+      if (clearPendingPrompt) clearPendingPrompt();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingPrompt]);
+
   return (
     <div className="flex flex-col h-full bg-white">
       <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white z-10">
@@ -104,10 +116,10 @@ export const AgentChat: React.FC<AgentChatProps> = ({ state, messages, onSendMes
               We are a team of 4 specialized AI agents. When you ask a question, we will <b>Think</b>, <b>Analyze</b>, <b>Optimize</b>, and <b>Execute</b> to give you the absolute best result.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-2 max-w-lg mx-auto">
-              <button onClick={() => setInput("Find a highly rated BBQ restaurant near the stadium.")} className="text-xs bg-white border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-50">Find Local Food</button>
-              <button onClick={() => setInput("Navigate me to the Official FIFA Store in the mall.")} className="text-xs bg-white border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-50">Mall Navigation</button>
-              <button onClick={() => setInput("Forecast mall foot traffic for the day of the final match.")} className="text-xs bg-white border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-50">Forecast Traffic</button>
-              <button onClick={() => setInput("Create an Instagram campaign targeting visiting fans.")} className="text-xs bg-white border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-50">Create Campaign</button>
+              <button onClick={() => handleSend("Find a highly rated BBQ restaurant near the stadium.")} className="text-xs bg-white border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-50">Find Local Food</button>
+              <button onClick={() => handleSend("Navigate me to the Official FIFA Store in the mall.")} className="text-xs bg-white border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-50">Mall Navigation</button>
+              <button onClick={() => handleSend("Forecast mall foot traffic for the day of the final match.")} className="text-xs bg-white border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-50">Forecast Traffic</button>
+              <button onClick={() => handleSend("Create an Instagram campaign targeting visiting fans.")} className="text-xs bg-white border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-50">Create Campaign</button>
             </div>
           </div>
         )}
@@ -257,7 +269,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ state, messages, onSendMes
             disabled={isTyping}
           />
           <button
-            onClick={handleSend}
+            onClick={() => handleSend()}
             disabled={isTyping || !input.trim()}
             className={`ml-2 p-2 rounded-full transition-colors ${
               input.trim() && !isTyping ? 'bg-brand-600 text-white hover:bg-brand-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed'
