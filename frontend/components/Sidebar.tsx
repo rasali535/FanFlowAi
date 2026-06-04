@@ -8,7 +8,8 @@ import {
   BarChart3,
   Megaphone,
   Store,
-  Database
+  Database,
+  PlaneTakeoff
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -25,6 +26,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ state, currentView, onViewChan
     
     { id: 'guide', label: 'Local Guide', icon: <MapPin size={20} />, section: 'Fan Experience' },
     { id: 'navigator', label: 'Mall Navigator', icon: <Compass size={20} />, section: 'Fan Experience' },
+    { id: 'travel', label: 'Travel & Bookings', icon: <PlaneTakeoff size={20} />, section: 'Fan Experience' },
     
     { id: 'insights', label: 'Retail Insights', icon: <BarChart3 size={20} />, section: 'Business Hub' },
     { id: 'campaigns', label: 'Local Marketing', icon: <Megaphone size={20} />, section: 'Business Hub' },
