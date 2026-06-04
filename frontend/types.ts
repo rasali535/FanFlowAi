@@ -52,6 +52,34 @@ export interface RetailInsight {
   trend: 'up' | 'down' | 'neutral';
 }
 
+export interface FlightBooking {
+  id: string;
+  airline: string;
+  flightNumber: string;
+  departure: string;
+  arrival: string;
+  price: number;
+  status: 'Planned' | 'Booked';
+}
+
+export interface HotelBooking {
+  id: string;
+  hotelName: string;
+  checkIn: string;
+  checkOut: string;
+  price: number;
+  status: 'Planned' | 'Booked';
+}
+
+export interface ItineraryEvent {
+  id: string;
+  date: string;
+  time: string;
+  title: string;
+  description: string;
+  type: 'Match' | 'Flight' | 'Hotel' | 'Activity';
+}
+
 export interface AppState {
   profile: UserProfile;
   businessProfile: BusinessProfile;
@@ -60,6 +88,9 @@ export interface AppState {
   activePromotions: StorePromotion[];
   campaigns: Campaign[];
   insights: RetailInsight[];
+  flights: FlightBooking[];
+  hotels: HotelBooking[];
+  itineraryEvents: ItineraryEvent[];
   isSyncing: boolean;
 }
 
@@ -79,10 +110,10 @@ export interface ChatMessage {
   actionTaken?: string;
 }
 
-export type ViewState = 'dashboard' | 'chat' | 'guide' | 'navigator' | 'campaigns' | 'insights' | 'vault';
+export type ViewState = 'dashboard' | 'chat' | 'guide' | 'navigator' | 'campaigns' | 'insights' | 'vault' | 'travel';
 
 export interface AgentAction {
-  type: 'ADD_PLACE' | 'SET_ROUTE' | 'CREATE_CAMPAIGN' | 'ADD_INSIGHT' | 'ADD_PROMOTION' | 'SYNC_FIVETRAN' | 'LOG_ARIZE';
+  type: 'ADD_PLACE' | 'SET_ROUTE' | 'CREATE_CAMPAIGN' | 'ADD_INSIGHT' | 'ADD_PROMOTION' | 'SYNC_FIVETRAN' | 'LOG_ARIZE' | 'BOOK_FLIGHT' | 'BOOK_HOTEL' | 'ADD_ITINERARY_EVENT';
   payload: any;
 }
 
