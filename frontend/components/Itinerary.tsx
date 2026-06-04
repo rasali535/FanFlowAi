@@ -4,7 +4,7 @@ import { MapPin, Store, Utensils, Ticket, Navigation, Crosshair, Map as MapIcon 
 
 interface LocalGuideProps {
   state: AppState;
-  onNavigate: (view: any) => void;
+  onNavigate: (view: any, prompt?: string) => void;
 }
 
 export const LocalGuide: React.FC<LocalGuideProps> = ({ state, onNavigate }) => {
@@ -50,7 +50,7 @@ export const LocalGuide: React.FC<LocalGuideProps> = ({ state, onNavigate }) => 
           <h2 className="text-2xl font-bold text-gray-900">Local Guide & Maps</h2>
           <p className="text-gray-500">Personalized recommendations and navigation in {state.profile.currentCity}.</p>
         </div>
-        <button onClick={() => onNavigate('chat')} className="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors shadow-sm flex items-center">
+        <button onClick={() => onNavigate('chat', 'Suggest some highly rated local attractions near my current location.')} className="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors shadow-sm flex items-center">
           <Navigation size={16} className="mr-2" /> Ask Agent for Suggestions
         </button>
       </div>
@@ -94,10 +94,10 @@ export const LocalGuide: React.FC<LocalGuideProps> = ({ state, onNavigate }) => 
                   <p className="text-xs text-gray-600 flex-1 mb-4 line-clamp-2">{place.description}</p>
                   
                   <div className="flex space-x-2 mt-auto">
-                    <button onClick={(e) => { e.stopPropagation(); onNavigate('navigator'); }} className="flex-1 py-1.5 text-xs font-medium text-brand-600 bg-brand-50 rounded-lg hover:bg-brand-100 transition-colors">
+                    <button onClick={(e) => { e.stopPropagation(); onNavigate('navigator', `Navigate me to ${place.name}`); }} className="flex-1 py-1.5 text-xs font-medium text-brand-600 bg-brand-50 rounded-lg hover:bg-brand-100 transition-colors">
                       Indoor Map
                     </button>
-                    <button onClick={(e) => { e.stopPropagation(); onNavigate('chat'); }} className="flex-1 py-1.5 text-xs font-medium text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <button onClick={(e) => { e.stopPropagation(); onNavigate('chat', `Find places similar to ${place.name}`); }} className="flex-1 py-1.5 text-xs font-medium text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                       Find Similar
                     </button>
                   </div>
