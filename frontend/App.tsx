@@ -80,12 +80,13 @@ const App: React.FC = () => {
           case 'CREATE_CAMPAIGN':
              if (action.payload && typeof action.payload === 'object') {
               const p = action.payload;
-              const name = p.name || p.campaignName || p.campaign_name || p.title || 'New Campaign';
-              const platform = p.platform || 'Instagram';
-              const status = p.status || 'Active';
-              const targetAudience = p.targetAudience || p.target_audience || p.audience || 'World Cup Fans';
-              const copy = p.copy || p.suggestedCopy || p.text || p.ad_copy || 'Check out our World Cup specials!';
-              const budget = Number(p.budget || p.recommendedBudget || p.cost || 500);
+              const campaignData = p.campaign || p.campaign_data || p;
+              const name = campaignData.name || campaignData.campaignName || campaignData.campaign_name || campaignData.title || 'New Campaign';
+              const platform = campaignData.platform || 'Instagram';
+              const status = campaignData.status || 'Active';
+              const targetAudience = campaignData.targetAudience || campaignData.target_audience || campaignData.audience || 'World Cup Fans';
+              const copy = campaignData.copy || campaignData.suggestedCopy || campaignData.text || campaignData.ad_copy || 'Check out our World Cup specials!';
+              const budget = Number(campaignData.budget || campaignData.recommendedBudget || campaignData.cost || 500);
               
               const newCampaign: Campaign = {
                 id: p.id || Date.now().toString(),
@@ -154,7 +155,12 @@ const App: React.FC = () => {
                 price,
                 status: 'Booked'
               };
-              newState.flights = [...prevState.flights, newFlight];
+              // Replace existing flight if it's an optimization/upgrade, otherwise append
+              if (prevState.flights.length > 0) {
+                newState.flights = [newFlight];
+              } else {
+                newState.flights = [...prevState.flights, newFlight];
+              }
               showToast(`Agent booked flight: ${newFlight.airline} ${newFlight.flightNumber}`);
             }
             break;
@@ -174,7 +180,12 @@ const App: React.FC = () => {
                 price,
                 status: 'Booked'
               };
-              newState.hotels = [...prevState.hotels, newHotel];
+              // Replace existing hotel if it's an optimization/upgrade, otherwise append
+              if (prevState.hotels.length > 0) {
+                newState.hotels = [newHotel];
+              } else {
+                newState.hotels = [...prevState.hotels, newHotel];
+              }
               showToast(`Agent booked hotel: ${newHotel.hotelName}`);
             }
             break;
