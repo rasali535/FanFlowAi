@@ -39,9 +39,10 @@ export const LocalGuide: React.FC<LocalGuideProps> = ({ state, onNavigate }) => 
     }, 1500);
   };
 
-  const mapQuery = selectedPlace
-    ? `${selectedPlace.name}, ${state.profile.currentCity}`
-    : state.profile.currentCity;
+  // Use Directions Mode (saddr & daddr) if a place is selected to draw the route on the map
+  const mapUrl = selectedPlace
+    ? `https://maps.google.com/maps?saddr=${encodeURIComponent(state.profile.currentCity)}&daddr=${encodeURIComponent(selectedPlace.name + ", " + state.profile.currentCity)}&t=&z=12&ie=UTF8&iwloc=&output=embed`
+    : `https://maps.google.com/maps?q=${encodeURIComponent(state.profile.currentCity)}&t=&z=12&ie=UTF8&iwloc=&output=embed`;
 
   return (
     <div className="p-8 h-full overflow-y-auto bg-gray-50 flex flex-col">
@@ -114,7 +115,7 @@ export const LocalGuide: React.FC<LocalGuideProps> = ({ state, onNavigate }) => 
             height="100%"
             frameBorder="0"
             style={{ border: 0 }}
-            src={`https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+            src={mapUrl}
             allowFullScreen
             title="Google Maps"
           ></iframe>
@@ -134,7 +135,7 @@ export const LocalGuide: React.FC<LocalGuideProps> = ({ state, onNavigate }) => 
           {/* Map Overlay Info */}
           <div className="absolute top-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-xl shadow-sm border border-white/50">
             <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-0.5">Currently Viewing</p>
-            <p className="text-sm font-bold text-gray-900 truncate">{selectedPlace ? selectedPlace.name : state.profile.currentCity}</p>
+            <p className="text-sm font-bold text-gray-900 truncate">{selectedPlace ? `${selectedPlace.name} (Route Active)` : state.profile.currentCity}</p>
           </div>
         </div>
       </div>
