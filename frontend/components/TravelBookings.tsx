@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AppState } from '../types';
-import { Plane, Hotel, Calendar, Plus, DollarSign, CheckCircle, Clock, MapPin, Search, Sparkles } from 'lucide-react';
+import { Plane, Hotel, Calendar, Plus, DollarSign, CheckCircle, Clock, MapPin, Search, Sparkles, TrendingDown, AlertCircle } from 'lucide-react';
 
 interface TravelBookingsProps {
   state: AppState;
@@ -41,6 +41,9 @@ export const TravelBookings: React.FC<TravelBookingsProps> = ({ state, onNavigat
     }, 1000);
   };
 
+  const currentFlight = state.flights[0];
+  const currentHotel = state.hotels[0];
+
   return (
     <div className="p-8 h-full overflow-y-auto bg-gray-50">
       <div className="flex justify-between items-center mb-8">
@@ -52,6 +55,28 @@ export const TravelBookings: React.FC<TravelBookingsProps> = ({ state, onNavigat
           <Sparkles size={16} className="mr-2" /> Ask Agent to Book
         </button>
       </div>
+
+      {/* Budget Optimization Alert Banner */}
+      {(currentFlight?.price > 1400 || currentHotel?.price > 1000) && (
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-5 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-sm">
+          <div className="flex items-start space-x-3">
+            <AlertCircle className="text-orange-600 mt-0.5 flex-shrink-0" size={20} />
+            <div>
+              <h4 className="font-bold text-orange-900 text-sm">Budget Optimization Opportunity Detected</h4>
+              <p className="text-xs text-orange-800 mt-1">
+                Our agents have detected cheaper flight and hotel alternatives for your travel dates. You could save up to $420!
+              </p>
+            </div>
+          </div>
+          <button 
+            onClick={() => onNavigate('chat', 'Analyze my current flight and hotel bookings and find cheaper alternatives for GBE to DFW from June 10 to June 18, 2026.')}
+            className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center whitespace-nowrap"
+          >
+            <TrendingDown size={14} className="mr-1.5" />
+            Optimize My Budget
+          </button>
+        </div>
+      )}
 
       {/* Navigation Tabs */}
       <div className="flex space-x-2 mb-6 border-b border-gray-200 pb-3">
@@ -180,7 +205,7 @@ export const TravelBookings: React.FC<TravelBookingsProps> = ({ state, onNavigat
                     <div className="text-right flex flex-col items-end">
                       <span className="text-2xl font-extrabold text-gray-900">${flight.price}</span>
                       <button
-                        onClick={() => onNavigate('chat', `Book flight ${flight.flightNumber} on ${flight.airline} for $${flight.price}`)}
+                        onClick={() => onNavigate('chat', `Please book this flight for me: Airline: ${flight.airline}, Flight Number: ${flight.flightNumber}, Departure: ${flight.departure}, Arrival: ${flight.arrival}, Price: ${flight.price}. Please execute the BOOK_FLIGHT action immediately.`)}
                         className="mt-2 bg-brand-600 hover:bg-brand-700 text-white px-4 py-1.5 rounded-lg text-xs font-bold transition-colors"
                       >
                         Book via Agent
@@ -203,9 +228,19 @@ export const TravelBookings: React.FC<TravelBookingsProps> = ({ state, onNavigat
                   <h4 className="font-bold text-gray-900 text-sm">{flight.airline} ({flight.flightNumber})</h4>
                   <p className="text-xs text-gray-500 mt-1">{flight.departure} &rarr; {flight.arrival}</p>
                 </div>
-                <span className="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full">
-                  Booked • ${flight.price}
-                </span>
+                <div className="flex items-center space-x-3">
+                  <span className="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full">
+                    Booked • ${flight.price}
+                  </span>
+                  {flight.price > 1400 && (
+                    <button 
+                      onClick={() => onNavigate('chat', 'Find a cheaper flight alternative for my current booking from GBE to DFW on June 10, 2026.')}
+                      className="text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 border border-orange-200 px-3 py-1 rounded-lg transition-colors"
+                    >
+                      Find Cheaper Option
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -281,7 +316,7 @@ export const TravelBookings: React.FC<TravelBookingsProps> = ({ state, onNavigat
                         <p className="text-xl font-extrabold text-gray-900">${hotel.price}</p>
                       </div>
                       <button
-                        onClick={() => onNavigate('chat', `Book hotel ${hotel.hotelName} from ${hotel.checkIn} to ${hotel.checkOut} for $${hotel.price}`)}
+                        onClick={() => onNavigate('chat', `Please book this hotel for me: Hotel Name: ${hotel.hotelName}, Check-In: ${hotel.checkIn}, Check-Out: ${hotel.checkOut}, Price: ${hotel.price}. Please execute the BOOK_HOTEL action immediately.`)}
                         className="bg-brand-600 hover:bg-brand-700 text-white px-4 py-1.5 rounded-lg text-xs font-bold transition-colors"
                       >
                         Book via Agent
@@ -304,9 +339,19 @@ export const TravelBookings: React.FC<TravelBookingsProps> = ({ state, onNavigat
                   <h4 className="font-bold text-gray-900 text-sm">{hotel.hotelName}</h4>
                   <p className="text-xs text-gray-500 mt-1">Check-in: {hotel.checkIn} • Check-out: {hotel.checkOut}</p>
                 </div>
-                <span className="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full">
-                  Booked • ${hotel.price}
-                </span>
+                <div className="flex items-center space-x-3">
+                  <span className="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full">
+                    Booked • ${hotel.price}
+                  </span>
+                  {hotel.price > 1000 && (
+                    <button 
+                      onClick={() => onNavigate('chat', 'Find a cheaper hotel alternative for my current booking in Dallas from June 11 to June 18, 2026.')}
+                      className="text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 border border-orange-200 px-3 py-1 rounded-lg transition-colors"
+                    >
+                      Find Cheaper Option
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
