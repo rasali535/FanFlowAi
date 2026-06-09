@@ -8,7 +8,8 @@ interface MallNavigatorProps {
 }
 
 export const MallNavigator: React.FC<MallNavigatorProps> = ({ state, onNavigate }) => {
-  const mapQuery = `${state.businessProfile.name}, ${state.businessProfile.location}`;
+  // Use Directions Mode to show the route from the user's current city to the mall
+  const mapUrl = `https://maps.google.com/maps?saddr=${encodeURIComponent(state.profile.currentCity)}&daddr=${encodeURIComponent(state.businessProfile.name + ", " + state.businessProfile.location)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
 
   return (
     <div className="p-8 h-full overflow-y-auto bg-gray-50">
@@ -26,20 +27,20 @@ export const MallNavigator: React.FC<MallNavigatorProps> = ({ state, onNavigate 
         {/* Left: Indoor Route & Map */}
         <div className="lg:col-span-2 space-y-6">
           
-          {/* Venue Map */}
+          {/* Venue Map with Route */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-2 h-64 relative overflow-hidden">
             <iframe
               width="100%"
               height="100%"
               frameBorder="0"
               style={{ border: 0, borderRadius: '0.75rem' }}
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=16&ie=UTF8&iwloc=&output=embed`}
+              src={mapUrl}
               allowFullScreen
               title="Venue Map"
             ></iframe>
             <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm border border-white/50 flex items-center">
               <MapPin size={14} className="text-blue-600 mr-1.5" />
-              <span className="text-xs font-bold text-gray-900">{state.businessProfile.name}</span>
+              <span className="text-xs font-bold text-gray-900">{state.businessProfile.name} (Route Active)</span>
             </div>
           </div>
 
