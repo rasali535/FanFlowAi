@@ -155,7 +155,6 @@ const App: React.FC = () => {
                 price,
                 status: 'Booked'
               };
-              // Replace existing flight if it's an optimization/upgrade, otherwise append
               if (prevState.flights.length > 0) {
                 newState.flights = [newFlight];
               } else {
@@ -180,7 +179,6 @@ const App: React.FC = () => {
                 price,
                 status: 'Booked'
               };
-              // Replace existing hotel if it's an optimization/upgrade, otherwise append
               if (prevState.hotels.length > 0) {
                 newState.hotels = [newHotel];
               } else {
