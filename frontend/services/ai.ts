@@ -181,7 +181,7 @@ const syncFivetranDataDeclaration: FunctionDeclaration = {
 
 const logArizeTraceDeclaration: FunctionDeclaration = {
   name: 'logArizeTrace',
-  description: 'Log agent reasoning and execution traces to Arize AI for observability.',
+  description: 'Log agent reasoning and decision traces to Arize AI for observability.',
   parameters: {
     type: Type.OBJECT,
     properties: {
@@ -311,8 +311,8 @@ export const sendMessageToAgent = async (
         };
       }));
 
-      // Correctly pass the array of Part objects directly to sendMessage to avoid ContentUnion errors
-      response = await chatSession!.sendMessage(parts);
+      // Correctly pass the array of Part objects directly to sendMessage wrapped in a message object
+      response = await chatSession!.sendMessage({ message: parts });
     }
 
     if (!response.text) throw new Error("Empty response from agent");
