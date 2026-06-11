@@ -95,10 +95,22 @@ export const LocalGuide: React.FC<LocalGuideProps> = ({ state, onNavigate }) => 
                   <p className="text-xs text-gray-600 flex-1 mb-4 line-clamp-2">{place.description}</p>
                   
                   <div className="flex space-x-2 mt-auto">
-                    <button onClick={(e) => { e.stopPropagation(); onNavigate('navigator', `Navigate me to ${place.name}`); }} className="flex-1 py-1.5 text-xs font-medium text-brand-600 bg-brand-50 rounded-lg hover:bg-brand-100 transition-colors">
+                    <button 
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        onNavigate('navigator', `Navigate me to ${place.name}`); 
+                      }} 
+                      className="flex-1 py-1.5 text-xs font-medium text-brand-600 bg-brand-50 rounded-lg hover:bg-brand-100 transition-colors"
+                    >
                       Indoor Map
                     </button>
-                    <button onClick={(e) => { e.stopPropagation(); onNavigate('chat', `Find places similar to ${place.name}`); }} className="flex-1 py-1.5 text-xs font-medium text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <button 
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        onNavigate('chat', `Find places similar to ${place.name}`); 
+                      }} 
+                      className="flex-1 py-1.5 text-xs font-medium text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    >
                       Find Similar
                     </button>
                   </div>
